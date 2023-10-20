@@ -18,7 +18,7 @@
 
 	</head>
 
-  <body>
+  <body onload="carregaListaDespesas()">
 
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-5">
@@ -53,10 +53,7 @@
 
       <div class="row mb-2">
         <div class="col-md-2">
-          <select class="form-control" id="ano">
-            <option value="">Ano</option>
-            <option value="2018">2018</option>
-          </select>
+          <input type="number" class="form-control" placeholder="Ano" id="ano">
         </div>
 
         <div class="col-md-2">
@@ -78,7 +75,7 @@
         </div>
         
         <div class="col-md-2">
-          <input type="text" class="form-control" placeholder="Dia" id="dia" />
+          <input type="number" class="form-control" placeholder="Dia" id="dia" />
         </div>
 
         <div class="col-md-6">
@@ -89,6 +86,7 @@
             <option value="3">Lazer</option>
             <option value="4">Saúde</option>
             <option value="5">Transporte</option>
+            <option value="6">Outro</option>
           </select>
         </div>
       </div>
@@ -99,7 +97,7 @@
         </div>
 
         <div class="col-md-2">
-          <input type="text" class="form-control" placeholder="Valor" id="valor" />
+          <input type="number" class="form-control" placeholder="Valor" id="valor" />
         </div>
 
         <div class="col-md-2 d-flex justify-content-end">
@@ -122,7 +120,10 @@
               </tr>
             </thead>
 
-            <tbody>
+            <tbody id="listaDespesas">
+              <tr>
+                
+              </tr>
             </tbody>
           </table>
         </div>
