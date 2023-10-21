@@ -8,7 +8,7 @@ class Despesa{
         this.valor = valor
     }
 
-    validarDados(){
+    validarDados(){ //Verifica se os inputs estão preenchidos
         for(let i in this){
             if(this[i] == undefined || this[i] == "" || this[i] == null){
                 return false
@@ -19,7 +19,7 @@ class Despesa{
 }
 
 class Bd{
-    constructor(){
+    constructor(){ //"inicia" os id's caso o bd esteja vazio
         let id = localStorage.getItem("id")
 
         if(id === null){
@@ -32,7 +32,7 @@ class Bd{
         return parseInt(proximoId) + 1
     }
     
-    gravar(d){
+    gravar(d){ //Inclui a despesa no bd
         let id = this.getProximoId()
         
         localStorage.setItem(id, JSON.stringify(d))
@@ -43,7 +43,7 @@ class Bd{
         let despesas = Array()
         let id = localStorage.getItem("id")
 
-        for(let i = 1; i <= id; i++){
+        for(let i = 1; i <= id; i++){ //impede id's sem despesas
             let despesa = JSON.parse(localStorage.getItem(i))
             
             if(despesa === null){
@@ -54,8 +54,30 @@ class Bd{
         return despesas
     }
 
-    pesquisar(despesa){
-        console.log(despesa)
+    pesquisar(despesa){ //Filtro de consultas
+        let despesasFiltradas = Array()
+        despesasFiltradas = this.recuperarTodosRegistros()
+        
+        if(despesa.ano != ""){
+            despesasFiltradas = despesasFiltradas.filter(d => d.ano == despesa.ano)
+        }
+        if(despesa.mes != ""){
+            despesasFiltradas = despesasFiltradas.filter(d => d.mes == despesa.mes)
+        }
+        if(despesa.dia != ""){
+            despesasFiltradas = despesasFiltradas.filter(d => d.dia == despesa.dia)
+        }
+        if(despesa.tipo != ""){
+            despesasFiltradas = despesasFiltradas.filter(d => d.tipo == despesa.tipo)
+        }
+        if(despesa.descricao != ""){
+            despesasFiltradas = despesasFiltradas.filter(d => d.descricao == despesa.descricao)
+        }
+        if(despesa.valor != ""){
+            despesasFiltradas = despesasFiltradas.filter(d => d.valor == despesa.valor)
+        }
+
+        return despesasFiltradas
     }
 }
 
@@ -108,19 +130,19 @@ function cadastrarDespesa(){
     }
 }
 
-function carregaListaDespesas(){
-    let despesas = Array()
+function carregaListaDespesas(despesas = Array(), filtro = false){
+    if(despesas.length == 0 && filtro == false){ //Testa se a consulta está vazia ou inexistente
     despesas = bd.recuperarTodosRegistros()
+    }
     
-    let listaDespesas = document.getElementById("listaDespesas")
+    let listaDespesas = document.getElementById("listaDespesas") //tbody
+    listaDespesas.innerHTML = "" //limpa tbody
 
     despesas.forEach(function(d){
         let linha = listaDespesas.insertRow() //linhas (tr)
-
-         //Colunas (td)
-        linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}`
+        linha.insertCell(0).innerHTML = `${d.dia}/${d.mes}/${d.ano}` //Colunas (td)
         
-        switch(parseInt(d.tipo)){
+        switch(parseInt(d.tipo)){ //Transforma o "tipo" de número para string
             case 1: d.tipo = "Alimentação"
                 break
             case 2: d.tipo = "Educação"
@@ -151,6 +173,7 @@ function pesquisarDespesa(){
     let valor = document.getElementById("valor").value
 
     let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
-
-    bd.pesquisar(despesa)
+    let despesas = bd.pesquisar(despesa)
+    
+    carregaListaDespesas(despesas, true) //Passa as despesas filtradas
 }
