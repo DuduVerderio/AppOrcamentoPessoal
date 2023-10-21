@@ -49,6 +49,7 @@ class Bd{
             if(despesa === null){
                 continue
             }
+            despesa.id = i //Inlcui o atributo ID
             despesas.push(despesa)
         }
         return despesas
@@ -78,6 +79,10 @@ class Bd{
         }
 
         return despesasFiltradas
+    }
+
+    remover(id){
+        localStorage.removeItem(id)
     }
 }
 
@@ -160,6 +165,19 @@ function carregaListaDespesas(despesas = Array(), filtro = false){
         linha.insertCell(1).innerHTML = d.tipo
         linha.insertCell(2).innerHTML = d.descricao
         linha.insertCell(3).innerHTML = d.valor
+
+        let btn = document.createElement("button") //Botão de remoção
+        btn.className = "btn btn-danger"
+        btn.innerHTML = "<i class='bi bi-trash3-fill'/i>"
+        btn.id = `id_despesa_${d.id}` //Cria um id para cada despesa
+        
+        btn.onclick = function(){
+            let id = this.id.replace("id_despesa_", "") //Transforma em número para ser removido em Bd
+            bd.remover(id)
+            window.location.reload()
+        }
+
+        linha.insertCell(4).append(btn)
     })
 
 }
