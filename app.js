@@ -53,19 +53,30 @@ class Bd{
         }
         return despesas
     }
+
+    pesquisar(despesa){
+        console.log(despesa)
+    }
 }
 
 let bd = new Bd()
 
 function cadastrarDespesa(){
-    let ano = document.getElementById("ano").value
-    let mes = document.getElementById("mes").value
-    let dia = document.getElementById("dia").value
-    let tipo = document.getElementById("tipo").value
-    let descricao = document.getElementById("descricao").value
-    let valor = document.getElementById("valor").value
+    let ano = document.getElementById("ano")
+    let mes = document.getElementById("mes")
+    let dia = document.getElementById("dia")
+    let tipo = document.getElementById("tipo")
+    let descricao = document.getElementById("descricao")
+    let valor = document.getElementById("valor")
 
-    let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
+    let despesa = new Despesa(
+        ano.value,
+        mes.value,
+        dia.value,
+        tipo.value,
+        descricao.value,
+        valor.value
+    )
     
     if(despesa.validarDados()){
         bd.gravar(despesa)
@@ -77,6 +88,14 @@ function cadastrarDespesa(){
         document.getElementById("modal_corpo").innerHTML = "A despesa foi cadastrada com sucesso"
 
         $("#modalRegistraDespesa").modal("show")
+
+        ano.value = ""
+        mes.value = ""
+        dia.value = ""
+        tipo.value = ""
+        descricao.value = ""
+        valor.value = ""
+
     }
     else{
         document.getElementById("modal_titulo_div").className = "modal-header text-danger"
@@ -121,4 +140,17 @@ function carregaListaDespesas(){
         linha.insertCell(3).innerHTML = d.valor
     })
 
+}
+
+function pesquisarDespesa(){
+    let ano = document.getElementById("ano").value
+    let mes = document.getElementById("mes").value
+    let dia = document.getElementById("dia").value
+    let tipo = document.getElementById("tipo").value
+    let descricao = document.getElementById("descricao").value
+    let valor = document.getElementById("valor").value
+
+    let despesa = new Despesa(ano, mes, dia, tipo, descricao, valor)
+
+    bd.pesquisar(despesa)
 }
