@@ -1,2 +1,3 @@
-# app_orcamento_pessoal
- App Orçamento Pessoal
+# App Orçamento Pessoal
+
+ Aplicativo de lista de despesas feito com JavaScript
